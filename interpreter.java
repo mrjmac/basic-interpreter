@@ -44,14 +44,14 @@ public class interpreter {
             {
                 String name = token;
                 token = st.nextToken();
-                if (!token.equals("equals"))
+                if (!token.equals("="))
                 {
                     pw.println("Syntax error");
                     break;
                 }
                 else
                 {
-                    int num = handleOps(vars, raw.substring(name.length() + 8, raw.length()));
+                    int num = handleOps(vars, raw.substring(name.length() + 3, raw.length()));
                     vars.put(name, num);
                 }
             }
