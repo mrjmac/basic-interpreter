@@ -34,7 +34,7 @@ public class interpreter {
                 tokens = new StringTokenizer(raw.substring(6));
                 currToken = tokens.nextToken();
                     
-                pw.println(expression());
+                pw.println(add());
 
             }
             else
@@ -51,7 +51,7 @@ public class interpreter {
                 {
                     tokens = new StringTokenizer(raw.substring(name.length() + 3));
                     currToken = tokens.nextToken();
-                    int num = expression();
+                    int num = add();
                     vars.put(name, num);
                 }
             }
@@ -66,54 +66,102 @@ public class interpreter {
     public static TreeMap<String, Integer> vars;
     public static StringTokenizer tokens;
 
-    public static int expression()
-    {
-        
-        return 0;
-    }
-
     public static int add()
     {
-        
+        int left = multi();
 
-        return 0;
+        while (currToken.equals("+") || currToken.equals("-"))
+        {
+            if (currToken.equals("+"))
+            {
+                currToken = tokens.nextToken();
+                left += multi();
+            }
+            else
+            {
+                currToken = tokens.nextToken();
+                left -= multi();
+            }
+            
+        }
+
+        return left;
     }
 
     public static int multi()
     {
-        
+        int left = parse();
+        while (currToken.equals("*") || currToken.equals("/"))
+        {
+            if (currToken.equals("*"))
+            {
+                currToken = tokens.nextToken();
+                left *= multi();
+            }
+            else
+            {
+                currToken = tokens.nextToken();
+                left /= multi();
+            }
+        }
 
-        return 0;
+        return left;
     }
 
     public static int parse()
     {
+        if (currToken.equals("("))
+        {
+            currToken = tokens.nextToken();
+            int ans = add();
+            if (tokens.hasMoreElements())
+            {
+                currToken = tokens.nextToken();
+            }
+            return ans;
+        }
+        else if (isNum(currToken))
+        {
+            int temp = Integer.parseInt(currToken);
+            if (tokens.hasMoreElements())
+            {
+                currToken = tokens.nextToken();
+            }
+            return temp;
+        }
+        else if (vars.get(currToken) != null)
+        {
+            int temp = vars.get(currToken);
+            if (tokens.hasMoreElements())
+            {
+                currToken = tokens.nextToken();
+            }
+            return temp;
+        }
+        else
+        {
+            System.out.println("Syntax Error");
+            System.exit(0);
+        }
+
         return 0;
     }
     
 
     public static boolean isNum(String token)
     {
-        if (vars.get(token) != null)
+        try 
+        { 
+            Integer.parseInt(token); 
+        } 
+        catch(NumberFormatException e) 
+        { 
+            return false; 
+        } 
+        catch(NullPointerException e) 
         {
-            currToken = vars.get(token) + "";
-            return true;
+            return false;
         }
-        else
-        {
-            try 
-            { 
-                Integer.parseInt(token); 
-            } 
-            catch(NumberFormatException e) 
-            { 
-                return false; 
-            } 
-            catch(NullPointerException e) 
-            {
-                return false;
-            }
-            return true;
-        }
+        return true;
     }
 }
