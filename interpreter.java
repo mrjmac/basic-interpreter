@@ -68,88 +68,29 @@ public class interpreter {
 
     public static int expression()
     {
-        if (tokens.hasMoreTokens())
-        {
-            return parse();
-        }
-        else if (isNum(currToken))
-        {
-            return Integer.parseInt(currToken);
-        }
-        else
-        {
-            System.out.println("HERE");
-            System.out.println("Syntax error");
-            System.exit(0);
-        }
+        
+        return 0;
+    }
+
+    public static int add()
+    {
+        
+
+        return 0;
+    }
+
+    public static int multi()
+    {
+        
+
         return 0;
     }
 
     public static int parse()
     {
-        if (currToken.equals("("))
-        {
-            currToken = tokens.nextToken();
-            expression();
-            if (currToken.equals(")"))
-            {
-                return highMath();
-            }
-            else
-            {
-                System.out.println("Syntax error");
-                System.exit(0);
-            }
-        }
-        else if (isNum(currToken))
-        {
-            return highMath();        
-        }
-        else
-        {
-            System.out.println("Syntax error");
-            System.exit(0);
-        }
-
         return 0;
     }
-
-    public static int highMath()
-    {
-        String temp = tokens.nextToken();
-
-        if (temp.equals("*"))
-        {
-            return Integer.parseInt(currToken) * Integer.parseInt(tokens.nextToken());
-        }
-        else if (temp.equals("/"))
-        {
-            return Integer.parseInt(currToken) / Integer.parseInt(tokens.nextToken());
-        }
-        else
-        {
-            return lowMath(temp);
-        }
-    }
-
-    public static int lowMath(String temp)
-    {
-        if (temp.equals("+"))
-        {
-            return Integer.parseInt(currToken) + Integer.parseInt(tokens.nextToken());
-        }
-        else if (temp.equals("-"))
-        {
-            return Integer.parseInt(currToken) - Integer.parseInt(tokens.nextToken());
-        }
-        else
-        {
-            System.out.println("Syntax error");
-            System.exit(0);
-        }
-
-        return 0;
-    }
+    
 
     public static boolean isNum(String token)
     {
