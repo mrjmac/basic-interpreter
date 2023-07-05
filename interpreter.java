@@ -7,7 +7,6 @@
 import java.io.*;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.ArrayDeque;
 import java.util.Scanner;
 
 public class interpreter {
@@ -28,7 +27,7 @@ public class interpreter {
             st = new StringTokenizer(raw);
 
             String token = st.nextToken();
-            // we can do two things, print and assign. If we print, the first word in a line will be print
+            // we can do two things, print and assign.
             if (token.equals("print"))
             {
                 tokens = new StringTokenizer(raw.substring(6));
@@ -40,8 +39,15 @@ public class interpreter {
             else
             {
                 String name = token;
-                //TODO: name can't start with a number and can't be "END"
+
+                if (isNum(name.charAt(0) + ""))
+                {
+                    pw.println("Syntax error");
+                    System.exit(0);
+                }
+
                 token = st.nextToken();
+
                 if (!token.equals("="))
                 {
                     pw.println("Syntax error");
