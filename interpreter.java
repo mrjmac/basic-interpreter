@@ -96,12 +96,12 @@ public class interpreter {
             if (currToken.equals("*"))
             {
                 currToken = tokens.nextToken();
-                left *= multi();
+                left *= parse();
             }
             else
             {
                 currToken = tokens.nextToken();
-                left /= multi();
+                left /= parse();
             }
         }
 
