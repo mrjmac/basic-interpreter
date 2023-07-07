@@ -72,14 +72,14 @@ public class interpreter {
     public static TreeMap<String, Integer> vars;
     public static StringTokenizer tokens;
 
-    public static int and()
+    public static int or()
     {
         int left = xor();
 
-        while (currToken.equals(""))
+        while (currToken.equals("|"))
         {
             currToken = tokens.nextToken();
-            left = left & xor();
+            left = left | xor();
         }
 
         return left;
@@ -92,13 +92,13 @@ public class interpreter {
         while (currToken.equals("^"))
         {
             currToken = tokens.nextToken();
-            left = left ^ xor();
+            left = left ^ and();
         }
 
         return left;
     }
     
-    public static int or()
+    public static int and()
     {
         int left = shift();
 
