@@ -33,7 +33,7 @@ public class interpreter {
                 tokens = new StringTokenizer(raw.substring(6));
                 currToken = tokens.nextToken();
                     
-                pw.println(add());
+                pw.println(or());
 
             }
             else
@@ -57,7 +57,7 @@ public class interpreter {
                 {
                     tokens = new StringTokenizer(raw.substring(name.length() + 3));
                     currToken = tokens.nextToken();
-                    int num = add();
+                    int num = or();
                     vars.put(name, num);
                 }
             }
@@ -71,6 +71,67 @@ public class interpreter {
     public static String currToken;
     public static TreeMap<String, Integer> vars;
     public static StringTokenizer tokens;
+
+    public static int and()
+    {
+        int left = xor();
+
+        while (currToken.equals(""))
+        {
+            currToken = tokens.nextToken();
+            left = left & xor();
+        }
+
+        return left;
+    }
+
+    public static int xor()
+    {
+        int left = and();
+
+        while (currToken.equals("^"))
+        {
+            currToken = tokens.nextToken();
+            left = left ^ xor();
+        }
+
+        return left;
+    }
+    
+    public static int or()
+    {
+        int left = shift();
+
+        while (currToken.equals("&"))
+        {
+            currToken = tokens.nextToken();
+            left = left & shift();
+        }
+
+        return left;
+    }
+
+    public static int shift()
+    {
+        int left = add();
+
+        while (currToken.equals(">>") || currToken.equals("<<"))
+        {
+            if (currToken.equals(">>"))
+            {
+                currToken = tokens.nextToken();
+                left = left >> add();
+            }
+            else
+            {
+                currToken = tokens.nextToken();
+                left = left << add();
+            }
+            
+        }
+
+        return left;
+    }
 
     public static int add()
     {
