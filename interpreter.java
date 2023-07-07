@@ -33,7 +33,7 @@ public class interpreter {
                 tokens = new StringTokenizer(raw.substring(6));
                 currToken = tokens.nextToken();
                     
-                pw.println(or());
+                pw.println(equals());
 
             }
             else
@@ -57,7 +57,7 @@ public class interpreter {
                 {
                     tokens = new StringTokenizer(raw.substring(name.length() + 3));
                     currToken = tokens.nextToken();
-                    int num = or();
+                    int num = equals();
                     vars.put(name, num);
                 }
             }
@@ -71,6 +71,24 @@ public class interpreter {
     public static String currToken;
     public static TreeMap<String, Integer> vars;
     public static StringTokenizer tokens;
+
+    public static int equals()
+    {
+        int left = or();
+
+        while (currToken.equals("=="))
+        {
+            currToken = tokens.nextToken();
+            int right = or();
+
+            if (left != right)
+            {
+                left = 0;
+            }
+        }
+
+        return left;
+    }
 
     public static int or()
     {
