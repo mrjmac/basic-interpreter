@@ -36,6 +36,18 @@ public class interpreter {
                 pw.println(equals());
 
             }
+            else if (token.equals("if"))
+            {
+                tokens = new StringTokenizer(raw.substring(3));
+                currToken = tokens.nextToken();
+
+                int valid = equals();
+
+                if (valid == 0)
+                {
+                    r.nextLine();
+                }
+            }
             else
             {
                 String name = token;
@@ -84,6 +96,14 @@ public class interpreter {
             if (left != right)
             {
                 left = 0;
+
+            }
+            else
+            {
+                if (left == 0)
+                {
+                    left = 1;
+                }
             }
         }
 
