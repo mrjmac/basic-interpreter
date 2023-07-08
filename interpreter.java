@@ -27,7 +27,7 @@ public class interpreter {
             st = new StringTokenizer(raw);
 
             String token = st.nextToken();
-            // we can do two things, print and assign.
+            // we can do three things, print, if, assign.
             if (token.equals("print"))
             {
                 tokens = new StringTokenizer(raw.substring(6));
