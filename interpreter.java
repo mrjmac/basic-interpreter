@@ -5,37 +5,41 @@
  */
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.Scanner;
+
 
 public class interpreter {
 
     public static void main(String args[]) throws IOException
-    {
-        Scanner r = new Scanner(new FileReader("code.in"));
+    {   
+        StringTokenizer st = new StringTokenizer(Files.readString(Path.of("code.in"))); // break input into tokens
         PrintWriter pw = new PrintWriter(System.out);
-        String raw;
-        StringTokenizer st; //read input line by line
 
         vars = new TreeMap<>();
 
-        while (r.hasNext())
+        while (st.hasMoreTokens())
         {
-
-            raw = r.nextLine();
-            st = new StringTokenizer(raw);
-
             String token = st.nextToken();
             // we can do three things, print, if, assign.
             if (token.equals("print"))
             {
-                tokens = new StringTokenizer(raw.substring(6));
+                String parse = "";
+                while (!token.equals(";"))
+                {
+                    token = st.nextToken();
+                    parse += token + " ";
+                }
+
+                tokens = new StringTokenizer(parse);
                 currToken = tokens.nextToken();
                     
                 pw.println(equals());
 
             }
+            /* 
             else if (token.equals("if"))
             {
                 tokens = new StringTokenizer(raw.substring(3));
@@ -48,6 +52,7 @@ public class interpreter {
                     r.nextLine();
                 }
             }
+            */
             else
             {
                 String name = token;
@@ -67,8 +72,16 @@ public class interpreter {
                 }
                 else
                 {
-                    tokens = new StringTokenizer(raw.substring(name.length() + 3));
+                    String parse = "";
+                    while (!token.equals(";"))
+                    {
+                        token = st.nextToken();
+                        parse += token + " ";
+                    }
+
+                    tokens = new StringTokenizer(parse);
                     currToken = tokens.nextToken();
+
                     int num = equals();
                     vars.put(name, num);
                 }
@@ -77,12 +90,16 @@ public class interpreter {
         }
 
         pw.close();
-        r.close();
     }
 
     public static String currToken;
     public static TreeMap<String, Integer> vars;
     public static StringTokenizer tokens;
+
+    public static void handleLine()
+    {
+
+    }
 
     public static int equals()
     {
