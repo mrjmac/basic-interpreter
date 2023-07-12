@@ -39,20 +39,27 @@ public class interpreter {
                 pw.println(equals());
 
             }
-            /* 
             else if (token.equals("if"))
             {
-                tokens = new StringTokenizer(raw.substring(3));
+                String parse = "";
+                while (!token.equals(")"))
+                {
+                    token = st.nextToken();
+                    parse += token + " ";
+                }
+
+                tokens = new StringTokenizer(parse);
                 currToken = tokens.nextToken();
 
                 int valid = equals();
 
-                if (valid == 0)
+                /*
+                if (valid != 0)
                 {
-                    r.nextLine();
+                    while (!)
                 }
+                */
             }
-            */
             else
             {
                 String name = token;
@@ -98,7 +105,7 @@ public class interpreter {
 
     public static void handleLine()
     {
-
+        // this is very important, also change currToken and vars to be global tbh
     }
 
     public static int equals()
