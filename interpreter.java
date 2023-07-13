@@ -23,23 +23,9 @@ public class interpreter {
         while (st.hasMoreTokens())
         {
             String token = st.nextToken();
-            // we can do three things, print, if, assign.
-            if (token.equals("print"))
-            {
-                String parse = "";
-                while (!token.equals(";"))
-                {
-                    token = st.nextToken();
-                    parse += token + " ";
-                }
-
-                tokens = new StringTokenizer(parse);
-                currToken = tokens.nextToken();
-                    
-                pw.println(equals());
-
-            }
-            else if (token.equals("if"))
+            
+            // the only multiline operation is an if, otherwise we can just handle the line seperately
+            if (token.equals("if"))
             {
                 String parse = "";
                 while (!token.equals(")"))
@@ -62,36 +48,17 @@ public class interpreter {
             }
             else
             {
-                String name = token;
-
-                if (isNum(name.charAt(0) + ""))
+                String parse = token + " ";
+                while (!token.equals(";"))
                 {
-                    pw.println("Syntax error");
-                    System.exit(0);
+                    token = st.nextToken();
+                    parse += token + " ";
                 }
 
-                token = st.nextToken();
+                tokens = new StringTokenizer(parse);
+                currToken = tokens.nextToken();
 
-                if (!token.equals("="))
-                {
-                    pw.println("Syntax error");
-                    System.exit(0);
-                }
-                else
-                {
-                    String parse = "";
-                    while (!token.equals(";"))
-                    {
-                        token = st.nextToken();
-                        parse += token + " ";
-                    }
-
-                    tokens = new StringTokenizer(parse);
-                    currToken = tokens.nextToken();
-
-                    int num = equals();
-                    vars.put(name, num);
-                }
+                handleLine();
             }
             
         }
@@ -105,7 +72,54 @@ public class interpreter {
 
     public static void handleLine()
     {
-        // this is very important, also change currToken and vars to be global tbh
+        if (currToken.equals("print"))
+        {
+            String parse = "";
+            while (!currToken.equals(";"))
+            {
+                currToken = tokens.nextToken();
+                parse += currToken + " ";
+            }
+
+            tokens = new StringTokenizer(parse);
+            currToken = tokens.nextToken();
+                    
+            System.out.println(equals());
+
+        }
+        else
+        {
+            String name = currToken;
+
+            if (isNum(name.charAt(0) + ""))
+            {
+                System.out.println("Syntax error");
+                System.exit(0);
+            }
+
+            currToken = tokens.nextToken();
+
+            if (!currToken.equals("="))
+            {
+                System.out.println("Syntax error");
+                System.exit(0);
+            }
+            else
+            {
+                String parse = "";
+                while (!currToken.equals(";"))
+                {
+                    currToken = tokens.nextToken();
+                    parse += currToken + " ";
+                }
+
+                tokens = new StringTokenizer(parse);
+                currToken = tokens.nextToken();
+
+                int num = equals();
+                vars.put(name, num);
+            }
+        }
     }
 
     public static int equals()
