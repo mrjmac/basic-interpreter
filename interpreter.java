@@ -47,6 +47,14 @@ public class interpreter {
                     }
                     
                 }
+                else
+                {
+                    while (!token.equals("}")
+                    {
+                        
+                    }
+                }
+                
                 
             }
             else
