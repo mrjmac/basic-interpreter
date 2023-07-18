@@ -1,6 +1,9 @@
 a = 2 ;
-if ( a == 3 )
+if ( a == 2 )
 {
-    print a ;
+    if ( 2 == 2)
+    {
+        print a ;
+    }
 }
 print 5 ;
