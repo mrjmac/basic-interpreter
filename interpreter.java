@@ -43,17 +43,17 @@ public class interpreter {
                 
                 if (valid != 0)
                 {
-                    while (!token.equals("}")
+                    while (!token.equals("}"))
                     {
-                        
+
                     }
                     
                 }
                 else
                 {
-                    while (!token.equals("}")
+                    while (!token.equals("}"))
                     {
-                        
+
                     }
                 }
                 
