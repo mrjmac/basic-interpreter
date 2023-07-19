@@ -70,6 +70,11 @@ public class interpreter {
     public static TreeMap<String, Integer> vars;
     public static StringTokenizer tokens;
 
+    public static void handleIf()
+    {
+
+    }
+    
     public static void handleLine()
     {
         if (currToken.equals("print"))
