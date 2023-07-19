@@ -2,6 +2,8 @@
     variable assignment (ints only)
     operators
     print
+
+    TODO: make recursive to handle nested ifs
  */
 
 import java.io.*;
@@ -38,13 +40,24 @@ public class interpreter {
                 currToken = tokens.nextToken();
 
                 int valid = equals();
-
-                /*
+                
                 if (valid != 0)
                 {
-                    while (!)
+                    while (!token.equals("}")
+                    {
+                        
+                    }
+                    
                 }
-                */
+                else
+                {
+                    while (!token.equals("}")
+                    {
+                        
+                    }
+                }
+                
+                
             }
             else
             {
