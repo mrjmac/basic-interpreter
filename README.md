@@ -14,4 +14,6 @@ Syntax doesn't enforce whitespace just like java.
 
 Dead lines do not work.
 
-Features I might add: arrays, if statements, functions, maybe variable scoping.
+Features I am adding: if statments
+
+Features I might add: arrays, functions, maybe variable scoping.
