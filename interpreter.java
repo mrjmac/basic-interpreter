@@ -18,7 +18,6 @@ public class interpreter {
     public static void main(String args[]) throws IOException
     {   
         StringTokenizer st = new StringTokenizer(Files.readString(Path.of("code.in"))); // break input into tokens
-        PrintWriter pw = new PrintWriter(System.out);
 
         vars = new TreeMap<>();
 
@@ -75,15 +74,16 @@ public class interpreter {
             }
             
         }
-
-        pw.close();
     }
 
+    
+
+    // turn into args
     public static String currToken;
     public static TreeMap<String, Integer> vars;
     public static StringTokenizer tokens;
 
-    public static void handleIf()
+    public static void handleBracket()
     {
 
     }
