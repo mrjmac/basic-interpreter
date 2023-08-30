@@ -35,10 +35,10 @@ public class interpreter {
                     parse += token + " ";
                 }
 
-                tokens = new StringTokenizer(parse);
-                currToken = tokens.nextToken();
+                StringTokenizer tokens = new StringTokenizer(parse);
+                String currToken = tokens.nextToken();
 
-                int valid = equals();
+                int valid = equals(currToken, tokens);
                 
                 if (valid != 0)
                 {
@@ -67,10 +67,10 @@ public class interpreter {
                     parse += token + " ";
                 }
 
-                tokens = new StringTokenizer(parse);
-                currToken = tokens.nextToken();
+                StringTokenizer tokens = new StringTokenizer(parse);
+                String currToken = tokens.nextToken();
 
-                handleLine();
+                handleLine(currToken, tokens);
             }
             
         }
@@ -79,16 +79,16 @@ public class interpreter {
     
 
     // turn into args
-    public static String currToken;
+    //public static String currToken;
     public static TreeMap<String, Integer> vars;
-    public static StringTokenizer tokens;
+    //public static StringTokenizer tokens;
 
     public static void handleBracket()
     {
 
     }
     
-    public static void handleLine()
+    public static void handleLine(String currToken, StringTokenizer tokens)
     {
         if (currToken.equals("print"))
         {
@@ -102,7 +102,7 @@ public class interpreter {
             tokens = new StringTokenizer(parse);
             currToken = tokens.nextToken();
                     
-            System.out.println(equals());
+            System.out.println(equals(currToken, tokens));
 
         }
         else
@@ -134,20 +134,20 @@ public class interpreter {
                 tokens = new StringTokenizer(parse);
                 currToken = tokens.nextToken();
 
-                int num = equals();
+                int num = equals(currToken, tokens);
                 vars.put(name, num);
             }
         }
     }
 
-    public static int equals()
+    public static int equals(String currToken, StringTokenizer tokens)
     {
-        int left = or();
+        int left = or(currToken, tokens);
 
         while (currToken.equals("=="))
         {
             currToken = tokens.nextToken();
-            int right = or();
+            int right = or(currToken, tokens);
 
             if (left != right)
             {
@@ -166,60 +166,60 @@ public class interpreter {
         return left;
     }
 
-    public static int or()
+    public static int or(String currToken, StringTokenizer tokens)
     {
-        int left = xor();
+        int left = xor(currToken, tokens);
 
         while (currToken.equals("|"))
         {
             currToken = tokens.nextToken();
-            left = left | xor();
+            left = left | xor(currToken, tokens);
         }
 
         return left;
     }
 
-    public static int xor()
+    public static int xor(String currToken, StringTokenizer tokens)
     {
-        int left = and();
+        int left = and(currToken, tokens);
 
         while (currToken.equals("^"))
         {
             currToken = tokens.nextToken();
-            left = left ^ and();
+            left = left ^ and(currToken, tokens);
         }
 
         return left;
     }
     
-    public static int and()
+    public static int and(String currToken, StringTokenizer tokens)
     {
-        int left = shift();
+        int left = shift(currToken, tokens);
 
         while (currToken.equals("&"))
         {
             currToken = tokens.nextToken();
-            left = left & shift();
+            left = left & shift(currToken, tokens);
         }
 
         return left;
     }
 
-    public static int shift()
+    public static int shift(String currToken, StringTokenizer tokens)
     {
-        int left = add();
+        int left = add(currToken, tokens);
 
         while (currToken.equals(">>") || currToken.equals("<<"))
         {
             if (currToken.equals(">>"))
             {
                 currToken = tokens.nextToken();
-                left = left >> add();
+                left = left >> add(currToken, tokens);
             }
             else
             {
                 currToken = tokens.nextToken();
-                left = left << add();
+                left = left << add(currToken, tokens);
             }
             
         }
@@ -227,21 +227,21 @@ public class interpreter {
         return left;
     }
 
-    public static int add()
+    public static int add(String currToken, StringTokenizer tokens)
     {
-        int left = multi();
+        int left = multi(currToken, tokens);
 
         while (currToken.equals("+") || currToken.equals("-"))
         {
             if (currToken.equals("+"))
             {
                 currToken = tokens.nextToken();
-                left += multi();
+                left += multi(currToken, tokens);
             }
             else
             {
                 currToken = tokens.nextToken();
-                left -= multi();
+                left -= multi(currToken, tokens);
             }
             
         }
@@ -249,32 +249,32 @@ public class interpreter {
         return left;
     }
 
-    public static int multi()
+    public static int multi(String currToken, StringTokenizer tokens)
     {
-        int left = parse();
+        int left = parse(currToken, tokens);
         while (currToken.equals("*") || currToken.equals("/"))
         {
             if (currToken.equals("*"))
             {
                 currToken = tokens.nextToken();
-                left *= parse();
+                left *= parse(currToken, tokens);
             }
             else
             {
                 currToken = tokens.nextToken();
-                left /= parse();
+                left /= parse(currToken, tokens);
             }
         }
 
         return left;
     }
 
-    public static int parse()
+    public static int parse(String currToken, StringTokenizer tokens)
     {
         if (currToken.equals("("))
         {
             currToken = tokens.nextToken();
-            int ans = add();
+            int ans = add(currToken, tokens);
             if (tokens.hasMoreElements())
             {
                 currToken = tokens.nextToken();
