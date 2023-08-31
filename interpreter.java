@@ -18,12 +18,21 @@ public class interpreter {
     public static void main(String args[]) throws IOException
     {   
         StringTokenizer st = new StringTokenizer(Files.readString(Path.of("code.in"))); // break input into tokens
-
         vars = new TreeMap<>();
 
-        while (st.hasMoreTokens())
+        handleBracket(st);
+        
+    }
+
+
+    public static TreeMap<String, Integer> vars;
+
+
+    public static void handleBracket(StringTokenizer tokens)
+    {
+        while (tokens.hasMoreTokens())
         {
-            String token = st.nextToken();
+            String token = tokens.nextToken();
             
             // the only multiline operation is an if, otherwise we can just handle the line seperately
             if (token.equals("if"))
@@ -31,7 +40,7 @@ public class interpreter {
                 String parse = "";
                 while (!token.equals(")"))
                 {
-                    token = st.nextToken();
+                    token = tokens.nextToken();
                     parse += token + " ";
                 }
 
@@ -63,32 +72,20 @@ public class interpreter {
                 String parse = token + " ";
                 while (!token.equals(";"))
                 {
-                    token = st.nextToken();
+                    token = tokens.nextToken();
                     parse += token + " ";
                 }
 
-                tokens = new StringTokenizer(parse);
-                currToken = tokens.nextToken();
+                StringTokenizer newTokens = new StringTokenizer(parse);
+                String currToken = newTokens.nextToken();
 
-                handleLine();
+                handleLine(currToken, newTokens);
             }
             
         }
     }
-
     
-
-    // turn into args
-    public static String currToken;
-    public static TreeMap<String, Integer> vars;
-    public static StringTokenizer tokens;
-
-    public static void handleBracket()
-    {
-
-    }
-    
-    public static void handleLine()
+    public static void handleLine(String currToken, StringTokenizer tokens)
     {
         if (currToken.equals("print"))
         {
