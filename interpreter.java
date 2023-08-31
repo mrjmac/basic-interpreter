@@ -31,16 +31,19 @@ public class interpreter {
     public static void handleBracket(StringTokenizer tokens)
     {
 
-        boolean prevCond = false;
+        int elseLevel = 0;  // 0 == if not found, throw error on elif or else
+                            // 1 == at some point conditional was true, ignore any elif or else
+                            // 2 == conditional has been entered but is not true yet, keep checking elif or else
 
         while (tokens.hasMoreTokens())
         {
             String token = tokens.nextToken();
             
             // the only multiline operation is an if, otherwise we can just handle the line seperately
-            if (token.equals("if") || (prevCond && token.equals("else if")))
+            if (token.equals("if"))
             {
                 String parse = "";
+
                 while (!token.equals(")"))
                 {
                     token = tokens.nextToken();
@@ -51,6 +54,7 @@ public class interpreter {
                 String newCurrToken = newTokens.nextToken();
 
                 int valid = parser.parse(newTokens, newCurrToken, vars);
+                
                 
                 if (valid != 0)
                 {
@@ -82,6 +86,8 @@ public class interpreter {
 
                     newTokens = new StringTokenizer(parse);
                     handleBracket(newTokens);
+
+                    elseLevel = 1;
                 }
                 else
                 {
@@ -100,13 +106,145 @@ public class interpreter {
                             brackets -= 1;
                         }
                     }
-                    prevCond = true;
-                }
-                
+
+                    elseLevel = 2;
+                }                
             }
-            else if (prevCond && token.equals("else"))
+            else if ((token.equals("else") || token.equals("elif")) && elseLevel != 0)
             {
-                prevCond = false;
+                if (elseLevel == 1)
+                {
+
+                    if (token.equals("elif"))
+                    {
+                        while (!token.equals(")"))
+                        {
+                            token = tokens.nextToken();
+                        }
+                    }
+
+                    int brackets = 1;
+                    String curr = tokens.nextToken();
+
+                    while (brackets != 0)
+                    {
+                        curr = tokens.nextToken();
+                        if (curr.equals("{"))
+                        {
+                            brackets += 1;
+                        }
+                        if (curr.equals("}"))
+                        {
+                            brackets -= 1;
+                        }
+                    }
+
+                }
+                else if (elseLevel == 2)
+                {
+                    if (token.equals("elif"))
+                    {
+                        String parse = "";
+
+                        while (!token.equals(")"))
+                        {
+                            token = tokens.nextToken();
+                            parse += token + " ";
+                        }
+
+                        StringTokenizer newTokens = new StringTokenizer(parse);
+                        String newCurrToken = newTokens.nextToken();
+
+                        int valid = parser.parse(newTokens, newCurrToken, vars);
+                
+                
+                        if (valid != 0)
+                        {
+                            parse = "";
+                            tokens.nextToken(); // throw away {
+                            int brackets = 1;
+
+                            while (brackets != 0)
+                            {
+                                token = tokens.nextToken();
+
+                                if (token.equals("}"))
+                                {
+                                    brackets -= 1;
+                                }
+
+                                if (brackets != 0)
+                                {
+                                    parse += token + " ";
+                                }
+
+                                if (token.equals("{"))
+                                {
+                                    brackets += 1;
+                                }
+
+                        
+                            }
+
+                            newTokens = new StringTokenizer(parse);
+                            handleBracket(newTokens);
+
+                            elseLevel = 1;
+                        }
+                        else
+                        {
+                            int brackets = 1;
+                            String curr = tokens.nextToken();
+
+                            while (brackets != 0)
+                            {
+                                curr = tokens.nextToken();
+                                if (curr.equals("{"))
+                                {
+                                    brackets += 1;
+                                }
+                                if (curr.equals("}"))
+                                {
+                                    brackets -= 1;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        String parse = "";
+                        tokens.nextToken(); // throw away {
+                        int brackets = 1;
+
+                        while (brackets != 0)
+                        {
+                            token = tokens.nextToken();
+
+                            if (token.equals("}"))
+                            {
+                                brackets -= 1;
+                            }
+
+                            if (brackets != 0)
+                            {
+                                parse += token + " ";
+                            }
+
+                            if (token.equals("{"))
+                            {
+                                brackets += 1;
+                            }
+
+                        
+                        }
+
+                        StringTokenizer newTokens = new StringTokenizer(parse);
+                        handleBracket(newTokens);
+
+                        // after an else it's not expected to have anything else
+                        elseLevel = 0;
+                    }
+                }
             }
             else 
             {
@@ -122,7 +260,8 @@ public class interpreter {
 
                 handleLine(currToken, newTokens);
 
-                prevCond = false;
+                // we have done something that isn't related to a conditional so the conditional state has reset
+                elseLevel = 0;
             }
             
         }
