@@ -28,7 +28,6 @@ public class parser {
             if (left != right)
             {
                 left = 0;
-
             }
             else
             {

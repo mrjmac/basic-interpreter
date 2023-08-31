@@ -30,12 +30,15 @@ public class interpreter {
 
     public static void handleBracket(StringTokenizer tokens)
     {
+
+        boolean prevCond = false;
+
         while (tokens.hasMoreTokens())
         {
             String token = tokens.nextToken();
             
             // the only multiline operation is an if, otherwise we can just handle the line seperately
-            if (token.equals("if"))
+            if (token.equals("if") || (prevCond && token.equals("else if")))
             {
                 String parse = "";
                 while (!token.equals(")"))
@@ -48,26 +51,65 @@ public class interpreter {
                 String newCurrToken = newTokens.nextToken();
 
                 int valid = parser.parse(newTokens, newCurrToken, vars);
+                System.out.println(valid);
                 
                 if (valid != 0)
                 {
-                    while (!token.equals("}"))
-                    {
+                    parse = "";
+                    tokens.nextToken(); // throw away {
+                    int brackets = 1;
 
+                    while (brackets != 0)
+                    {
+                        token = tokens.nextToken();
+
+                        if (token.equals("}"))
+                        {
+                            brackets -= 1;
+                        }
+
+                        if (brackets != 0)
+                        {
+                            parse += token + " ";
+                        }
+
+                        if (token.equals("{"))
+                        {
+                            brackets += 1;
+                        }
+
+                        
                     }
-                    
+
+                    newTokens = new StringTokenizer(parse);
+                    handleBracket(newTokens);
                 }
                 else
                 {
-                    while (!token.equals("}"))
-                    {
+                    int brackets = 1;
+                    String curr = tokens.nextToken();
 
+                    while (brackets != 0)
+                    {
+                        curr = tokens.nextToken();
+                        if (curr.equals("{"))
+                        {
+                            brackets += 1;
+                        }
+                        if (curr.equals("}"))
+                        {
+                            brackets -= 1;
+                        }
                     }
+                    prevCond = true;
                 }
                 
-                
             }
-            else
+            else if (prevCond && token.equals("else"))
+            {
+                prevCond = false;
+            }
+            else 
             {
                 String parse = token + " ";
                 while (!token.equals(";"))
@@ -80,6 +122,8 @@ public class interpreter {
                 String currToken = newTokens.nextToken();
 
                 handleLine(currToken, newTokens);
+
+                prevCond = false;
             }
             
         }
