@@ -149,7 +149,7 @@ public class parser {
         if (currToken.equals("("))
         {
             currToken = tokens.nextToken();
-            int ans = add();
+            int ans = equals();
             if (tokens.hasMoreElements())
             {
                 currToken = tokens.nextToken();

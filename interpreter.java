@@ -51,7 +51,6 @@ public class interpreter {
                 String newCurrToken = newTokens.nextToken();
 
                 int valid = parser.parse(newTokens, newCurrToken, vars);
-                System.out.println(valid);
                 
                 if (valid != 0)
                 {
