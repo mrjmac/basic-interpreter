@@ -2,8 +2,7 @@
     variable assignment (ints only)
     operators
     print
-
-    TODO: make recursive to handle nested ifs
+    conditionals
  */
 
 import java.io.*;
