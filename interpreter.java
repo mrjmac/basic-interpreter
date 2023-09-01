@@ -289,7 +289,8 @@ public class interpreter {
                 {
                     handleBracket(new StringTokenizer(parse));
                 }
-
+                
+                elseLevel = 0;
             }
             else 
             {
