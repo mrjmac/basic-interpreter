@@ -69,12 +69,56 @@ public class parser {
     
     public static int and()
     {
-        int left = shift();
+        int left = relate();
 
         while (currToken.equals("&"))
         {
             currToken = tokens.nextToken();
-            left = left & shift();
+            left = left & relate();
+        }
+
+        return left;
+    }
+
+    public static int relate()
+    {
+        int left = shift();
+
+        while (currToken.equals(">") || currToken.equals("<"))
+        {
+            if (currToken.equals(">"))
+            {
+                currToken = tokens.nextToken();
+                int right = shift();
+                if (left <= right)
+                {
+                    left = 0;
+                }
+                else
+                {
+                    if (left == 0)
+                    {
+                        left = 1;
+                    }
+                }
+            }
+            else
+            {
+                currToken = tokens.nextToken();
+                int right = shift();
+                if (left >= right)
+                {
+                    left = 0;
+                }
+                else
+                {
+                    if (left == 0)
+                    {
+                        left = 1;
+                    }
+                }
+            }
+            
         }
 
         return left;

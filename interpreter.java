@@ -3,6 +3,7 @@
     operators
     print
     conditionals
+    while loops
  */
 
 import java.io.*;
@@ -244,6 +245,51 @@ public class interpreter {
                         elseLevel = 0;
                     }
                 }
+            }
+            else if (token.equals("while"))
+            {
+                String condition = "";
+
+                while (!token.equals(")"))
+                {
+                    token = tokens.nextToken();
+                    condition += token + " ";
+                }
+
+                StringTokenizer conditionTokens = new StringTokenizer(condition);
+                String conditionCurrToken = conditionTokens.nextToken();
+                
+                String parse = "";
+                tokens.nextToken(); // throw away {
+                int brackets = 1;
+
+                while (brackets != 0)
+                {
+                    token = tokens.nextToken();
+
+                    if (token.equals("}"))
+                    {
+                        brackets -= 1;
+                    }
+
+                    if (brackets != 0)
+                    {
+                        parse += token + " ";
+                    }
+
+                    if (token.equals("{"))
+                    {
+                        brackets += 1;
+                    }
+
+                        
+                }
+
+                while (parser.parse(new StringTokenizer(condition), conditionCurrToken, vars) != 0)
+                {
+                    handleBracket(new StringTokenizer(parse));
+                }
+
             }
             else 
             {
