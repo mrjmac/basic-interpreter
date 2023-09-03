@@ -2,7 +2,7 @@
 
 Extremely basic interpreter
 
-- You can create integers, do basic math (4 function for now, it should be easy for me to add more though), print, handle conditionals, and run while loops
+- You can create integers, do basic math (standard Java/c++ operators), print, handle conditionals, and run while loops
 - Uses recursive-descent parsing to handle all operations
 - Informs you if you've made a syntax error
 - To see an example of code that you can write, check code.in
