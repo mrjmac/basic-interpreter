@@ -9,3 +9,10 @@ Extremely basic interpreter
 - Syntax doesn't enforce whitespace just like java
 - Dead lines do not work
 - Features I might add (after I finish college applications): arrays, functions, maybe variable scoping
+
+# Video of code running
+
+
+
+https://github.com/mrjmac/basic-interpreter/assets/40571030/bf4db3fd-18ed-4d66-9ea8-7eb81b63a5c8
+
