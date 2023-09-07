@@ -13,7 +13,32 @@ public class parser {
         vars = var;
         tokens = more;
 
-        return equals();
+        return andand();
+    }
+
+    public static int andand()
+    {
+        int left = equals();
+
+        while (currToken.equals("&&"))
+        {
+            currToken = tokens.nextToken();
+            int right = equals();
+
+            if (!(left > 0 && right > 0))
+            {
+                left = 0;
+            }
+            else
+            {
+                if (left == 0)
+                {
+                    left = 1;
+                }
+            }
+        }
+
+        return left;
     }
 
     public static int equals()
@@ -171,17 +196,22 @@ public class parser {
     public static int multi()
     {
         int left = parse();
-        while (currToken.equals("*") || currToken.equals("/"))
+        while (currToken.equals("*") || currToken.equals("/") || currToken.equals("%"))
         {
             if (currToken.equals("*"))
             {
                 currToken = tokens.nextToken();
                 left *= parse();
             }
-            else
+            else if (currToken.equals("/"))
             {
                 currToken = tokens.nextToken();
                 left /= parse();
+            }
+            else
+            {
+                currToken = tokens.nextToken();
+                left %= parse();
             }
         }
 

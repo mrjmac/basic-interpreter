@@ -17,7 +17,7 @@ public class interpreter {
 
     public static void main(String args[]) throws IOException
     {   
-        StringTokenizer st = new StringTokenizer(Files.readString(Path.of("code.in"))); // break input into tokens
+        StringTokenizer st = new StringTokenizer(Files.readString(Path.of("prime.in"))); // break input into tokens
         vars = new TreeMap<>();
 
         handleBracket(st);

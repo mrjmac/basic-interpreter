@@ -1,0 +1,13 @@
+check = 287 ;
+curr = 2 ;
+
+while ( curr < check / 2 && check > 0 )
+{
+    if ( check % curr == 0 )
+    {
+        check = 0 ;
+    }
+    curr = curr + 1 ;
+}
+
+print check ;
