@@ -13,19 +13,19 @@ public class parser {
         vars = var;
         tokens = more;
 
-        return andand();
+        return oror();
     }
 
-    public static int andand()
+    public static int oror()
     {
-        int left = equals();
+        int left = andand();
 
-        while (currToken.equals("&&"))
+        while (currToken.equals("||"))
         {
             currToken = tokens.nextToken();
-            int right = equals();
+            int right = andand();
 
-            if (!(left > 0 && right > 0))
+            if (!(left > 0 || right > 0))
             {
                 left = 0;
             }
@@ -41,16 +41,16 @@ public class parser {
         return left;
     }
 
-    public static int equals()
+    public static int andand()
     {
         int left = or();
 
-        while (currToken.equals("=="))
+        while (currToken.equals("&&"))
         {
             currToken = tokens.nextToken();
             int right = or();
 
-            if (left != right)
+            if (!(left > 0 && right > 0))
             {
                 left = 0;
             }
@@ -94,12 +94,37 @@ public class parser {
     
     public static int and()
     {
-        int left = relate();
+        int left = equals();
 
         while (currToken.equals("&"))
         {
             currToken = tokens.nextToken();
-            left = left & relate();
+            left = left & equals();
+        }
+
+        return left;
+    }
+
+    public static int equals()
+    {
+        int left = relate();
+
+        while (currToken.equals("=="))
+        {
+            currToken = tokens.nextToken();
+            int right = relate();
+
+            if (left != right)
+            {
+                left = 0;
+            }
+            else
+            {
+                if (left == 0)
+                {
+                    left = 1;
+                }
+            }
         }
 
         return left;
@@ -109,13 +134,45 @@ public class parser {
     {
         int left = shift();
 
-        while (currToken.equals(">") || currToken.equals("<"))
+        while (currToken.equals(">") || currToken.equals("<") || currToken.equals(">=") || currToken.equals("<="))
         {
             if (currToken.equals(">"))
             {
                 currToken = tokens.nextToken();
                 int right = shift();
                 if (left <= right)
+                {
+                    left = 0;
+                }
+                else
+                {
+                    if (left == 0)
+                    {
+                        left = 1;
+                    }
+                }
+            }
+            else if (currToken.equals(">="))
+            {
+                currToken = tokens.nextToken();
+                int right = shift();
+                if (!(left >= right))
+                {
+                    left = 0;
+                }
+                else
+                {
+                    if (left == 0)
+                    {
+                        left = 1;
+                    }
+                }
+            }
+            else if (currToken.equals("<="))
+            {
+                currToken = tokens.nextToken();
+                int right = shift();
+                if (!(left <= right))
                 {
                     left = 0;
                 }
