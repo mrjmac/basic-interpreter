@@ -15,6 +15,8 @@ import java.util.TreeMap;
 
 public class interpreter {
 
+    public static TreeMap<String, Integer> vars;
+
     public static void main(String args[]) throws IOException
     {   
         StringTokenizer st = new StringTokenizer(Files.readString(Path.of("prime.in"))); // break input into tokens
@@ -23,10 +25,6 @@ public class interpreter {
         handleBracket(st);
         
     }
-
-
-    public static TreeMap<String, Integer> vars;
-
 
     public static void handleBracket(StringTokenizer tokens)
     {
