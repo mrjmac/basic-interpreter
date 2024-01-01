@@ -8,7 +8,7 @@ Extremely basic interpreter
 - To see an example of code that you can write, check code.in
 - Syntax doesn't enforce whitespace just like java
 - Dead lines do not work
-- Features I might add (after I finish college applications (soon)): arrays, functions, maybe variable scoping
+- Features I might add: arrays, functions, maybe variable scoping
 
 To verify output, see my [transpiler](https://github.com/mrjmac/transpiler) that converts code written in the interperter to Java
 
